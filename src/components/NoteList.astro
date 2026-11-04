@@ -1,0 +1,10 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { noteUrl, formatDate, readingTime } from '../lib/notes';
+import Icon from './Icon.astro';
+interface Props { notes: CollectionEntry<'notes'>[]; }
+const { notes } = Astro.props;
+---
+<div class="note-list">
+  {notes.map(note => <a class="note-item" href={noteUrl(note.id)}><div class="note-date"><time datetime={note.data.date.toISOString()}>{formatDate(note.data.date)}</time><span>{readingTime(note)} 分钟阅读</span></div><div class="note-summary"><h3>{note.data.title}</h3><p>{note.data.description}</p>{note.data.tags.length > 0 && <ul class="note-tags" aria-label="标签">{note.data.tags.map(tag => <li>#{tag}</li>)}</ul>}</div><span class="note-arrow"><Icon name="arrow" size={18} /></span></a>)}
+</div>

@@ -1,0 +1,58 @@
+---
+import Base from '../layouts/Base.astro';
+import NoteList from '../components/NoteList.astro';
+import TagList from '../components/TagList.astro';
+import Icon from '../components/Icon.astro';
+import { getNotes, getTags, noteUrl } from '../lib/notes';
+import { site } from '../site.config';
+import ShapeWaves from '../components/ShapeWaves';
+import '../styles/shape-waves.css';
+import PublicationDashboard from '../components/PublicationDashboard';
+import { shanghaiDay } from '../lib/publications';
+const notes = await getNotes();
+const tags = getTags(notes);
+const publications = notes.map(note => ({ id: note.id, title: note.data.title, date: shanghaiDay(note.data.date), category: note.data.category, href: noteUrl(note.id) }));
+---
+<Base>
+  <section class="hero" aria-labelledby="home-title">
+    <div class="hero-backdrop" aria-hidden="true">
+      <ShapeWaves
+        client:load
+        text="</>"
+        fontFamily={'Geist, "Geist Sans", system-ui, sans-serif'}
+        fontWeight={500}
+        textSize={0.6}
+        shapes="mixed"
+        cellSize={10}
+        dotSize={0.75}
+        color="#8a8a8a"
+        hoverColor="#18181b"
+        backgroundColor="#ffffff"
+        speed={1}
+        scale={1}
+        contrast={1}
+        brightness={0.4}
+        flow={0}
+        direction={0}
+        fade={0.25}
+        interactive
+        splashRadius={40}
+        splashStrength={0.4}
+        glow={0.35}
+        intro
+        introDuration={1.6}
+        paused={false}
+      />
+    </div>
+    <p class="site-status"><span class="status-dot" aria-hidden="true"></span>个人笔记 · 持续记录</p>
+    <h1 id="home-title"><span class="hero-name">{site.name}</span><span class="hero-tagline">的学习笔记</span></h1>
+    <p class="hero-line">学习，记录，<mark>慢慢积累。</mark></p>
+    <p class="hero-description">{site.description}<br />Markdown 写作，纯静态发布，随时回来翻一翻。</p>
+    <dl class="hero-stats"><div><dt>笔记 NOTES</dt><dd>{notes.length}</dd></div><div><dt>标签 TAGS</dt><dd>{tags.length}</dd></div></dl>
+    <a class="primary-button" href="#feed">浏览笔记<Icon name="arrow" size={16} /></a>
+  </section>
+  <div class="content-grid">
+    <section class="feed" id="feed" aria-labelledby="feed-heading"><div class="section-heading"><h2 id="feed-heading">最新笔记</h2><span class="heading-rule"></span><a href="/tags/">按标签浏览<Icon name="arrow" size={14} /></a></div><NoteList notes={notes} />{notes.length > 0 && notes.every(note => note.data.tags.includes('入门示例')) && <p class="sample-notice">当前 {notes.length} 篇为项目自带的入门示例，可自由修改或删除。</p>}</section>
+    <aside class="home-aside" aria-label="标签与发布数据"><section class="tag-panel"><div class="section-heading"><h2>标签</h2><span class="heading-rule"></span></div><TagList tags={tags} /></section><PublicationDashboard client:load publications={publications} referenceDate={shanghaiDay()} /></aside>
+  </div>
+</Base>

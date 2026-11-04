@@ -1,0 +1,8 @@
+---
+import Base from '../../layouts/Base.astro';
+import TagList from '../../components/TagList.astro';
+import { getNotes, getTags } from '../../lib/notes';
+const notes = await getNotes();
+const tags = getTags(notes);
+---
+<Base title="标签"><section class="page-head"><a class="back-link" href="/">← 返回笔记</a><h1>标签</h1><p>共 {tags.length} 个标签，{notes.length} 篇笔记。</p></section><TagList tags={tags} /></Base>

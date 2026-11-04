@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+import NotFoundCode from '../components/NotFoundCode';
+import Icon from '../components/Icon.astro';
+import '../styles/not-found.css';
+---
+<Base title="页面未找到">
+  <section class="not-found" aria-labelledby="not-found-title">
+    <div class="not-found-code" aria-hidden="true">
+      <span class="not-found-fallback">404</span>
+      <NotFoundCode client:load />
+    </div>
+    <div class="not-found-code not-found-handwriting" aria-hidden="true">
+      <span class="not-found-fallback">not found</span>
+      <NotFoundCode client:load text="not found" />
+    </div>
+    <h1 id="not-found-title"><span class="sr-only">404：</span>这一页还没有写下。</h1>
+    <p>地址可能有误，或这篇笔记已经搬家。</p>
+    <div class="not-found-actions">
+      <a class="primary-button" href="/"><Icon name="home" size={16} />回到笔记首页</a>
+      <a class="not-found-search" href="/search/"><Icon name="search" size={16} />搜索笔记</a>
+    </div>
+  </section>
+</Base>

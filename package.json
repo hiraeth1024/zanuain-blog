@@ -1,0 +1,44 @@
+{
+  "name": "zanuain-blog",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0 <23 || >=24.0.0"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "dev:site": "astro dev --host 127.0.0.1",
+    "bookmarks:serve": "node --env-file-if-exists=.env --experimental-strip-types server/bookmarks/index.ts",
+    "bookmarks:admin": "node --env-file-if-exists=.env --experimental-strip-types scripts/bookmarks-admin.ts",
+    "test:bookmarks": "node --experimental-strip-types --test tests/bookmarks.test.ts tests/bookmarks-web.test.ts",
+    "build": "astro build",
+    "preview": "astro preview --host 127.0.0.1",
+    "check": "astro check",
+    "test:publications": "node --experimental-strip-types --test tests/publications.test.mjs",
+    "test:terminal": "node --experimental-strip-types --test tests/terminal.test.mjs"
+  },
+  "dependencies": {
+    "@astrojs/react": "5.0.7",
+    "@mozilla/readability": "^0.6.0",
+    "@tailwindcss/vite": "4.3.4",
+    "astro": "6.4.8",
+    "cheerio": "^1.2.0",
+    "ipaddr.js": "^2.5.0",
+    "linkedom": "^0.18.15",
+    "pinyin-pro": "^3.29.5",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "sanitize-html": "^2.18.1",
+    "tailwindcss": "4.3.4",
+    "vgpu": "0.3.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.12",
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/sanitize-html": "^2.16.2",
+    "typescript": "~5.9.3"
+  }
+}

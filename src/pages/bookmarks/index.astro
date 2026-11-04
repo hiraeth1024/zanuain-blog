@@ -1,0 +1,8 @@
+---
+import Base from '../../layouts/Base.astro';
+import Bookmarks from '../../components/bookmarks/Bookmarks';
+---
+<Base title="书签" description="值得留下的网页，与你分享。">
+  <Bookmarks client:only="react" mode="list"><p slot="fallback" role="status">正在加载书签…</p></Bookmarks>
+  <noscript><p>启用 JavaScript 后可浏览、搜索书签。</p></noscript>
+</Base>

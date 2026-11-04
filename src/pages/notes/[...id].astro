@@ -1,0 +1,48 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { getNotes, noteUrl, tagUrl, formatDate, readingTime } from '../../lib/notes';
+export async function getStaticPaths() {
+  return (await getNotes()).map(note => ({ params: { id: note.id }, props: { note } }));
+}
+const { note } = Astro.props;
+const { Content, headings } = await render(note);
+const notes = await getNotes();
+const index = notes.findIndex(item => item.id === note.id);
+const previous = notes[index + 1];
+const next = notes[index - 1];
+const related = notes.filter(item => item.id !== note.id && item.data.tags.some(tag => note.data.tags.includes(tag))).slice(0, 3);
+---
+<Base title={note.data.title} description={note.data.description}>
+  <div class="read-progress" aria-hidden="true"><span id="read-progress-value"></span></div>
+  <article class="note-article">
+    <header class="article-header"><a class="back-link" href="/#feed">← 返回笔记</a><p class="article-category">{note.data.category}</p><h1>{note.data.title}</h1><p class="article-description">{note.data.description}</p><div class="article-meta"><time datetime={note.data.date.toISOString()}>{formatDate(note.data.date)}</time><span>/</span><span>{readingTime(note)} 分钟阅读</span><button class="copy-link text-button" type="button" aria-live="polite">复制链接</button></div><ul class="note-tags article-tag-links">{note.data.tags.map(tag => <li><a href={tagUrl(tag)}>#{tag}</a></li>)}</ul></header>
+    <div class="reading-grid">
+      {headings.length > 0 && <aside class="toc" aria-label="目录"><h2>目录</h2><ol>{headings.filter(heading => heading.depth === 2 || heading.depth === 3).map(heading => <li class:list={[{ nested: heading.depth === 3 }]}><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ol></aside>}
+      <div class="reading-content"><div class="prose"><Content /></div>
+        {related.length > 0 && <section class="related-notes" aria-labelledby="related-heading"><div class="section-heading"><h2 id="related-heading">相关笔记</h2><span class="heading-rule"></span></div><div class="related-grid">{related.map(item => <a href={noteUrl(item.id)}><span>#{item.data.tags.find(tag => note.data.tags.includes(tag))}</span><strong>{item.data.title}</strong></a>)}</div></section>}
+        <nav class="adjacent-notes" aria-label="相邻笔记">{previous ? <a href={noteUrl(previous.id)}><span>← 上一篇</span><strong>{previous.data.title}</strong></a> : <span></span>}{next && <a class="next-note" href={noteUrl(next.id)}><span>下一篇 →</span><strong>{next.data.title}</strong></a>}</nav>
+      </div>
+    </div>
+  </article>
+</Base>
+<script>
+  const copyButton = document.querySelector<HTMLButtonElement>('.copy-link');
+  copyButton?.addEventListener('click', async () => {
+    try {
+      const url = new URL(location.href); url.hash = '';
+      await navigator.clipboard.writeText(url.href);
+      copyButton.textContent = '链接已复制';
+    } catch {
+      copyButton.textContent = '复制未成功，请复制地址栏';
+    }
+  });
+  const progress = document.querySelector<HTMLElement>('#read-progress-value');
+  const updateProgress = () => {
+    const total = document.documentElement.scrollHeight - innerHeight;
+    if (progress) progress.style.transform = `scaleX(${total > 0 ? Math.min(1, scrollY / total) : 1})`;
+  };
+  document.addEventListener('scroll', updateProgress, { passive: true });
+  addEventListener('resize', updateProgress);
+  updateProgress();
+</script>

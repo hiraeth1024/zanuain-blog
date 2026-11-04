@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { getNotes, noteUrl, formatDate } from '../lib/notes';
+const notes = await getNotes();
+---
+<Base title="搜索"><section class="search-head"><h1>搜索</h1><p>按标题、摘要、标签查找笔记。</p><label class="search-box"><Icon name="search" size={21} /><span class="sr-only">搜索关键词</span><input id="note-search" type="search" placeholder="例如：Markdown / Git / 写作" autocomplete="off" /><kbd>Esc</kbd></label><p class="search-count" id="result-count" aria-live="polite">共 {notes.length} 条</p><noscript><p>开启 JavaScript 可使用关键词筛选；下方仍可浏览全部笔记。</p></noscript></section><div class="search-results">{notes.map(note => <a class="search-result" href={noteUrl(note.id)} data-search={`${note.data.title} ${note.data.description} ${note.data.tags.join(' ')}`}><div class="search-result-meta"><span>笔记</span><time datetime={note.data.date.toISOString()}>{formatDate(note.data.date)}</time></div><h2>{note.data.title}</h2><p>{note.data.description}</p><ul class="note-tags">{note.data.tags.map(tag => <li>#{tag}</li>)}</ul></a>)}</div><div class="empty-state" id="search-empty" hidden><Icon name="search" size={30} /><h2>没有找到相关笔记</h2><p>试试其他关键词，或清除搜索查看全部。</p><button class="text-button" id="clear-search">清除搜索</button></div></Base>
+<script>
+  const input = document.querySelector<HTMLInputElement>('#note-search');
+  const results = Array.from(document.querySelectorAll<HTMLElement>('[data-search]'));
+  const filter = () => {
+    const query = (input?.value ?? '').trim().toLocaleLowerCase();
+    const terms = query.split(/\s+/).filter(Boolean);
+    let count = 0;
+    results.forEach(result => {
+      result.hidden = !terms.every(term => (result.dataset.search ?? '').toLocaleLowerCase().includes(term));
+      if (!result.hidden) count++;
+    });
+    const status = document.querySelector('#result-count');
+    if (status) status.textContent = `共 ${count} 条`;
+    const empty = document.querySelector<HTMLElement>('#search-empty');
+    if (empty) empty.hidden = count > 0;
+    const url = new URL(location.href);
+    query ? url.searchParams.set('q', input?.value ?? '') : url.searchParams.delete('q');
+    history.replaceState(null, '', url);
+  };
+  if (input) input.value = new URLSearchParams(location.search).get('q') ?? '';
+  input?.addEventListener('input', filter);
+  input?.addEventListener('keydown', event => { if (event.key === 'Escape' && input) { input.value = ''; filter(); } });
+  document.querySelector('#clear-search')?.addEventListener('click', () => { if (input) input.value = ''; filter(); input?.focus(); });
+  filter();
+</script>

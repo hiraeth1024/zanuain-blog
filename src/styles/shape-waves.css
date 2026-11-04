@@ -1,0 +1,27 @@
+/* Utilities only: preserve the existing DESIGN typography and element defaults. */
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+@source '../components/ShapeWaves.tsx';
+
+.hero {
+  position: relative;
+  isolation: isolate;
+}
+
+.hero-backdrop {
+  position: absolute;
+  inset-block: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.28;
+}
+
+body:has(.hero-backdrop) { overflow-x: clip; }
+
+.hero-backdrop > astro-island { display: block; width: 100%; height: 100%; }
+
+/* Only the decorative canvas changes tone; content and original GPU props stay intact. */
+[data-theme='dark'] .hero-backdrop { filter: invert(1); mix-blend-mode: screen; }

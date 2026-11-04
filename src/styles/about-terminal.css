@@ -1,0 +1,72 @@
+.about-terminal { --terminal-ground: var(--color-charcoal); --terminal-ink: #e7e7e7; --terminal-muted: #b0b0b0; --terminal-blue: var(--color-sky-wash); max-width: 940px; background: var(--terminal-ground); color: var(--terminal-ink); border: 1px solid var(--color-charcoal); border-radius: var(--radius-cards); overflow: hidden; font-family: ui-monospace, 'SFMono-Regular', Menlo, Monaco, Consolas, 'Liberation Mono', monospace; font-size: 14px; line-height: 1.8; color-scheme: dark; }
+.about-terminal ::selection { color: var(--color-pure-white); background: #285c89; }
+.terminal-titlebar { height: 46px; background: #202020; border-bottom: 1px solid #343434; display: flex; align-items: center; justify-content: center; position: relative; }
+.terminal-titlebar h2 { font: 400 12px/1.5 var(--font-notioninter); color: #d1d1d1; letter-spacing: .02em; margin: 0; }
+.terminal-window-dots { position: absolute; left: 18px; display: flex; gap: 7px; }
+.terminal-window-dots i { display: block; width: 10px; height: 10px; border-radius: 50%; background: #ff5f56; }
+.terminal-window-dots i:nth-child(2) { background: #ffbd2e; }
+.terminal-window-dots i:nth-child(3) { background: #27c93f; }
+.terminal-reset { position: absolute; right: 12px; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 6px; color: var(--terminal-muted); }
+.terminal-reset:hover { color: var(--color-pure-white); background: #343434; }
+.terminal-screen { padding: 26px 28px 0; }
+.terminal-log { height: 320px; overflow-y: auto; overflow-x: hidden; padding-right: 12px; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #555 var(--terminal-ground); }
+.terminal-log::-webkit-scrollbar { width: 6px; }
+.terminal-log::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
+.terminal-log::-webkit-scrollbar-track { background: var(--terminal-ground); }
+.terminal-entry + .terminal-entry { margin-top: 20px; }
+.terminal-line { display: flex; gap: 10px; align-items: baseline; margin: 0 0 8px; overflow-wrap: anywhere; min-width: 0; }
+.terminal-line > span:last-child, .terminal-line a { min-width: 0; white-space: pre-wrap; }
+.terminal-label { flex: 0 0 auto; font-size: 12px; padding: 0 5px; border-radius: 3px; background: #242424; line-height: 1.8; color: var(--terminal-blue); }
+.terminal-system { color: #c4b5e8; }
+.terminal-success { color: #b3d798; }
+.terminal-error { color: #ffa3a7; }
+.terminal-line a { color: var(--terminal-blue); text-decoration: underline; text-underline-offset: 4px; text-decoration-color: #3b637f; }
+.terminal-line a:hover { color: var(--color-pure-white); text-decoration-color: currentColor; }
+.terminal-echo { display: flex; gap: 10px; margin: 0 0 10px; overflow-wrap: anywhere; color: var(--terminal-ink); }
+.terminal-echo > span:last-child { min-width: 0; white-space: pre-wrap; }
+.terminal-prompt { flex-shrink: 0; color: var(--terminal-blue); font-size: 12px; white-space: nowrap; user-select: none; }
+.terminal-prompt > span { color: var(--terminal-muted); }
+.terminal-form { margin-top: 22px; }
+.terminal-input-row { display: flex; align-items: center; gap: 10px; min-width: 0; padding: 10px 0; border-bottom: 1px solid #555; }
+.terminal-input-row:focus-within { border-bottom-color: var(--terminal-blue); }
+.terminal-input-row input { width: 100%; min-width: 0; flex: 1; background: transparent; color: var(--terminal-ink); caret-color: var(--terminal-blue); border: 0; border-radius: 0; padding: 0; font: inherit; line-height: 1.8; outline: none; }
+.terminal-input-row input::placeholder { color: var(--terminal-muted); opacity: 1; }
+.terminal-input-row input:focus-visible { outline: none; }
+.terminal-submit { display: grid; place-items: center; width: 32px; height: 32px; flex-shrink: 0; border-radius: 6px; color: var(--terminal-blue); }
+.terminal-submit:hover:not(:disabled) { background: #292929; color: var(--color-pure-white); }
+.terminal-submit:disabled { color: #686868; cursor: default; }
+.terminal-suggestions { color: var(--terminal-blue); font-size: 12px; margin: 8px 0 0; overflow-wrap: anywhere; }
+.terminal-idle { margin: 0; color: var(--terminal-muted); }
+.terminal-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 0 18px; }
+.terminal-quick { display: flex; flex-wrap: wrap; gap: 3px; }
+.terminal-quick button { font: inherit; font-size: 12px; padding: 3px 7px; border-radius: 4px; color: var(--terminal-blue); }
+.terminal-quick button:hover { background: #292929; color: var(--color-pure-white); }
+.terminal-toolbar > p { display: flex; gap: 14px; font-size: 11px; color: var(--terminal-muted); margin: 0; white-space: nowrap; }
+.about-terminal button:focus-visible, .terminal-log:focus-visible, .about-terminal a:focus-visible { outline: 2px solid var(--terminal-blue); outline-offset: 3px; }
+.terminal-noscript { color: var(--terminal-muted); font-size: 13px; padding-bottom: 18px; margin: 0; }
+.terminal-noscript a { color: var(--terminal-blue); text-decoration: underline; text-underline-offset: 3px; }
+.terminal-source { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 24px; max-width: 940px; font-size: 12px; color: var(--muted); margin-top: 18px; }
+.terminal-source p { margin: 0; }
+.terminal-source a { text-decoration: underline; text-underline-offset: 3px; }
+.terminal-source a:hover { color: var(--blue); }
+@media (max-width: 760px) {
+  .terminal-screen { padding: 20px 18px 0; }
+  .terminal-log { height: 340px; padding-right: 6px; }
+  .terminal-toolbar { flex-wrap: wrap; gap: 8px; }
+  .terminal-toolbar > p { padding: 0 7px; }
+}
+@media (max-width: 480px) {
+  .about-terminal { font-size: 13px; }
+  .terminal-titlebar { height: 42px; }
+  .terminal-window-dots { left: 14px; gap: 5px; }
+  .terminal-window-dots i { width: 8px; height: 8px; }
+  .terminal-screen { padding: 20px 14px 0; }
+  .terminal-label { font-size: 11px; }
+  .terminal-line { gap: 8px; }
+  .terminal-prompt { font-size: 11px; }
+  .terminal-input-row { gap: 7px; flex-wrap: wrap; }
+  .terminal-input-row > .terminal-prompt { flex-basis: 100%; }
+  .terminal-input-row input { font-size: 16px; }
+  .terminal-echo { flex-wrap: wrap; gap: 4px 8px; }
+  .terminal-echo > .terminal-prompt { flex-basis: 100%; }
+}

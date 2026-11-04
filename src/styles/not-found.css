@@ -1,0 +1,24 @@
+.site-main:has(.not-found) { display: grid; place-items: center; }
+.site-main:has(.not-found) + .site-footer { margin-top: 0; }
+.not-found { width: 100%; padding: 48px 0; text-align: center; }
+.not-found-code { display: grid; place-items: center; min-height: 110px; margin-bottom: 8px; font-size: clamp(4.5rem, 18vw, 6rem); font-weight: 700; line-height: 1; color: var(--strong); }
+.not-found-handwriting { min-height: 68px; margin-bottom: 32px; font-family: 'Caveat', cursive; font-size: clamp(2.5rem, 10vw, 3.5rem); font-weight: 600; }
+.not-found-fallback, .not-found-code > astro-island { grid-area: 1 / 1; }
+.not-found-code > astro-island { display: grid; place-items: center; max-width: 100%; }
+.not-found-code canvas { display: block; max-width: 100%; }
+.not-found-code canvas:not([data-ready='true']) { visibility: hidden; width: 0; height: 0; }
+.not-found-code:has(canvas[data-ready='true']) .not-found-fallback { visibility: hidden; }
+.not-found h1 { margin-bottom: 16px; font-size: var(--text-heading); }
+.not-found > p { color: var(--muted); margin-bottom: 32px; }
+.not-found-actions { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 12px 24px; }
+.not-found-search { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 2px; color: var(--blue); font-size: var(--text-body-sm); }
+.not-found-search:hover { text-decoration: underline; }
+@media (max-width: 480px) {
+  .not-found { padding: 36px 0; }
+  .not-found-code { margin-bottom: 4px; }
+  .not-found-handwriting { min-height: 60px; margin-bottom: 28px; }
+  .not-found h1 { font-size: 28px; }
+  .not-found > p { max-width: 28ch; margin-inline: auto; font-size: var(--text-body-sm); }
+}
+/* Caveat · Copyright 2014 The Caveat Project Authors · SIL OFL 1.1 · /licenses/caveat-OFL.txt */
+@font-face { font-family: 'Caveat'; src: url('/fonts/caveat-variable.ttf') format('truetype'); font-style: normal; font-weight: 400 700; font-display: swap; }

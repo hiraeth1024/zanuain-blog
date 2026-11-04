@@ -1,0 +1,67 @@
+# Nginx 运行配置（容器内）。构建镜像时复制为 /etc/nginx/templates/default.conf.template，
+# 启动时由官方镜像的 envsubst 渲染：${BOOKMARKS_UPSTREAM} 默认是 api:4322。
+#
+# TLS 由此容器之前的反向代理（宿主机 Nginx、Caddy、Traefik 或云负载均衡）终结；
+# 本容器只提供 HTTP/80。
+
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    server_name _;
+
+    root /usr/share/nginx/html;
+    index index.html;
+    charset utf-8;
+    absolute_redirect off;
+
+    client_max_body_size 1m;
+
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 1024;
+    gzip_proxied any;
+    gzip_types text/plain text/css text/xml application/javascript application/json application/rss+xml application/xml image/svg+xml;
+
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+
+    # 同源书签 API。用变量 + Docker 内置 DNS 转发，api 容器重启换 IP 后无需重启本容器。
+    location /api/bookmarks {
+        resolver 127.0.0.11 valid=10s ipv6=off;
+        set $bookmarks_api "http://${BOOKMARKS_UPSTREAM}$request_uri";
+        proxy_pass $bookmarks_api;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_connect_timeout 5s;
+        proxy_read_timeout 60s;
+        add_header Cache-Control "no-store" always;
+    }
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    error_page 404 /404.html;
+    location = /404.html {
+        internal;
+    }
+
+    # 构建产物带内容哈希，可长期缓存；expires 只写 Cache-Control，其余响应头沿用上面的设置。
+    location /_astro/ {
+        expires 1y;
+        access_log off;
+    }
+
+    location /fonts/ {
+        expires 30d;
+        access_log off;
+    }
+
+    location ~ /\. {
+        deny all;
+    }
+}

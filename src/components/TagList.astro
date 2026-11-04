@@ -1,0 +1,6 @@
+---
+import { tagUrl } from '../lib/notes';
+interface Props { tags: { name: string; count: number }[]; }
+const { tags } = Astro.props;
+---
+<ul class="tag-list">{tags.map(tag => <li><a href={tagUrl(tag.name)} aria-label={`${tag.name}，${tag.count} 篇`}><span>#{tag.name}</span><span class="tag-count">{tag.count}</span></a></li>)}</ul>

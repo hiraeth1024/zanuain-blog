@@ -1,0 +1,17 @@
+---
+import Base from '../../layouts/Base.astro';
+import Bookmarks from '../../components/bookmarks/Bookmarks';
+export function getStaticPaths() {
+  return [
+    {page: 'new', title: '添加书签'}, {page: 'edit', title: '编辑书签'}, {page: 'read', title: '阅读书签'},
+    {page: 'login', title: '管理员登录'}, {page: 'settings', title: '书签设置'}, {page: 'close', title: '书签已保存'},
+  ].map(item => ({params: {page: item.page}, props: {title: item.title, mode: item.page}}));
+}
+const { title, mode } = Astro.props;
+---
+<Base title={title}>
+  <Bookmarks client:only="react" mode={mode as 'new' | 'edit' | 'read' | 'login' | 'settings' | 'close'}>
+    <p slot="fallback" role="status">正在加载书签…</p>
+  </Bookmarks>
+  <noscript><p>书签的搜索与管理需要启用 JavaScript。</p></noscript>
+</Base>

@@ -1,0 +1,5 @@
+---
+import Base from '../../layouts/Base.astro';
+import { site } from '../../site.config';
+---
+{site.repository ? <html lang="zh-CN"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="robots" content="noindex" /><link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" /><title>{site.name} 写作</title></head><body><script is:inline src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script><noscript>写作编辑器需要 JavaScript。也可以在本地编辑 Markdown 并通过 Git 发布。</noscript></body></html> : <Base title="写作"><section class="page-head"><a class="back-link" href="/">← 返回笔记</a><h1>写作</h1><p>用 Markdown 记录，通过 Git 发布。</p></section><div class="writing-guide prose"><h2>先写下第一篇笔记</h2><p>在项目的 <code>src/content/notes/</code> 新建 Markdown 文件。本地写作、预览和 Git 提交已经可以使用。</p><p><a href="/notes/getting-started/">查看完整写作指南 →</a></p><h2>连接在线编辑器</h2><p>与参考站一样，写作入口支持 Sveltia CMS。当前尚未连接 GitHub 仓库，因此暂不显示登录按钮。</p><p>在构建环境设置 <code>CONTENT_REPOSITORY=你的账号/仓库名</code> 后重新构建，即可使用 GitHub 仓库中的笔记进行在线编辑。</p><p>编辑器使用你的 GitHub 权限；本站不会提供或保存服务器端账号。配置方式见项目 README。</p></div></Base>}

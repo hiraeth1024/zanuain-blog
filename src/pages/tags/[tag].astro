@@ -1,0 +1,11 @@
+---
+import Base from '../../layouts/Base.astro';
+import NoteList from '../../components/NoteList.astro';
+import { getNotes, getTags } from '../../lib/notes';
+export async function getStaticPaths() {
+  const notes = await getNotes();
+  return getTags(notes).map(tag => ({ params: { tag: tag.name }, props: { tag: tag.name, notes: notes.filter(note => note.data.tags.includes(tag.name)) } }));
+}
+const { tag, notes } = Astro.props;
+---
+<Base title={`#${tag}`}><section class="page-head"><a class="back-link" href="/tags/">← 返回全部标签</a><h1>#{tag}</h1><p>{notes.length} 篇笔记</p></section><div class="tag-notes"><NoteList notes={notes} /></div></Base>

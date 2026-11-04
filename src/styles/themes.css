@@ -1,0 +1,76 @@
+/* Semantic colors only. Keep the reference palette fixed for the About terminal. */
+:root {
+  color-scheme: light;
+  --canvas: #ffffff;
+  --surface: #ffffff;
+  --subtle: #f6f5f4;
+  --text: rgb(0 0 0 / 90%);
+  --strong: #111111;
+  --muted: #615d59;
+  --line: rgb(0 0 0 / 8%);
+  --blue: #0067c4;
+  --accent-soft: #e6f3fe;
+  --accent-fill: #0075de;
+  --on-accent: #ffffff;
+  --button-hover: #111111;
+  --highlight: #f6d5b8;
+  --highlight-ink: #111111;
+  --heat-0: #f6f5f4;
+  --heat-1: #b8d8f6;
+  --heat-2: #8cbaed;
+  --heat-3: #59a5e9;
+  --heat-4: #0075de;
+  --heat-ink: #111111;
+  --heat-strong-ink: #ffffff;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --canvas: #191919;
+  --surface: #202020;
+  --subtle: #292929;
+  --text: #ededeb;
+  --strong: #f7f7f5;
+  --muted: #b5b3af;
+  --line: rgb(255 255 255 / 12%);
+  --blue: #82bcf5;
+  --accent-soft: #203346;
+  --accent-fill: #0075de;
+  --on-accent: #ffffff;
+  --button-hover: #166fbd;
+  --highlight: #62432d;
+  --highlight-ink: #ffe0c2;
+  --heat-0: #2b2b2b;
+  --heat-1: #24496b;
+  --heat-2: #2d6b9e;
+  --heat-3: #3c91cd;
+  --heat-4: #82bcf5;
+  --heat-ink: #ffffff;
+  --heat-strong-ink: #111111;
+}
+
+.theme-toggle { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 38px; width: 38px; height: 38px; border: 1px solid var(--line); border-radius: var(--radius-buttons); color: var(--muted); }
+.theme-toggle:hover { background: var(--subtle); color: var(--strong); }
+.theme-sun, [data-theme='dark'] .theme-moon { display: none; }
+[data-theme='dark'] .theme-sun { display: inline-flex; }
+
+/* Shiki ships both palettes in the static HTML; no client re-highlighting. */
+[data-theme='dark'] .astro-code,
+[data-theme='dark'] .astro-code span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+
+@media (min-width: 761px) and (max-width: 900px) {
+  .header-actions .header-search { width: 38px; height: 38px; justify-content: center; }
+  .header-actions .header-search span, .header-actions .header-search kbd { display: none; }
+}
+@media (max-width: 760px) {
+  .brand { order: 1; }
+  .theme-toggle { order: 2; margin-left: auto; }
+  .js-ready .menu-toggle { order: 3; margin-left: 8px; }
+  .header-actions { order: 4; }
+}

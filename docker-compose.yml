@@ -1,0 +1,47 @@
+# Docker Compose 部署：静态站点（web）+ 书签服务（api）。
+# 变量可写在同目录 .env，或直接通过环境变量覆盖；示例见 deploy/docker.env.example。
+name: zanuain-blog
+
+services:
+  web:
+    image: zanuain-blog-web:0.1.0
+    build:
+      context: .
+      target: web
+      args:
+        SITE_URL: ${SITE_URL:-https://notes.example.com}
+        CONTENT_REPOSITORY: ${CONTENT_REPOSITORY:-}
+    ports:
+      - "${WEB_PORT:-8080}:80"
+    environment:
+      BOOKMARKS_UPSTREAM: api:4322
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+
+  api:
+    image: zanuain-blog-api:0.1.0
+    build:
+      context: .
+      target: api
+    environment:
+      # 生产环境要求 BOOKMARKS_ORIGINS 全部为 HTTPS，见 docs/docker.md「HTTPS 要求」。
+      NODE_ENV: ${NODE_ENV:-production}
+      BOOKMARKS_HOST: 0.0.0.0
+      BOOKMARKS_PORT: "4322"
+      BOOKMARKS_DATA_DIR: /data
+      BOOKMARKS_ORIGINS: ${BOOKMARKS_ORIGINS:-https://notes.example.com}
+    volumes:
+      - bookmarks-data:/data
+    expose:
+      - "4322"
+    restart: unless-stopped
+    init: true
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  bookmarks-data:

@@ -1,0 +1,23 @@
+[Unit]
+Description=Zanuain bookmarks API
+After=network.target
+
+[Service]
+Type=simple
+User=zanuain
+Group=zanuain
+WorkingDirectory=/opt/zanuain-bookmarks
+EnvironmentFile=/etc/zanuain-bookmarks.env
+ExecStart=/usr/bin/node --experimental-strip-types server/bookmarks/index.ts
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/zanuain-bookmarks
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target
